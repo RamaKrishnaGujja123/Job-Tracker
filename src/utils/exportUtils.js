@@ -1,3 +1,41 @@
+import jsPDF from 'jspdf';
+
+/**
+ * Export data as a PDF file.
+ * @param {Array<Object>} data - The data to be exported.
+ * @param {string} [filename='applications.pdf'] - The name of the PDF file.
+ */
+export function exportToPDF(data, filename = 'applications.pdf') {
+  const doc = new jsPDF();
+
+  // Simple title
+  doc.setFontSize(18);
+  doc.text('Job Applications', 14, 22);
+
+  doc.setFontSize(12);
+
+  // Prepare table headers (keys of first object)
+  const headers = Object.keys(data[0]);
+
+  // Prepare table rows: extract values from each data object
+  const rows = data.map(app => headers.map(header => String(app[header])));
+
+  // Add table headers
+  let startY = 30;
+  headers.forEach((header, i) => {
+    doc.text(header, 14 + i * 40, startY);
+  });
+
+  // Add table rows
+  rows.forEach((row, rowIndex) => {
+    row.forEach((cell, cellIndex) => {
+      doc.text(cell, 14 + cellIndex * 40, startY + 10 + rowIndex * 10);
+    });
+  });
+
+  doc.save(filename);
+}
+
 /**
  * Export data as a JSON file.
  * @param {Array|Object} data - The data to be exported.

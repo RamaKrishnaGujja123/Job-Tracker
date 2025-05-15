@@ -9,6 +9,9 @@
       <button class="btn btn-secondary" @click="exportDataAsCSV">
         Export as CSV
       </button>
+      <button class="btn btn-secondary" @click="exportDataAsPDF">
+        Export as PDF
+      </button>
     </div>
 
     <Filters
@@ -38,7 +41,7 @@ import { computed, reactive } from 'vue';
 import { useApplicationStore } from '../store/applicationStore';
 import ApplicationCard from '../components/ApplicationCard.vue';
 import Filters from '../components/Filters.vue';
-import { exportToJSON, exportToCSV } from '../utils/exportUtils';
+import { exportToJSON, exportToCSV, exportToPDF } from '../utils/exportUtils';
 
 export default {
   components: { ApplicationCard, Filters },
@@ -89,6 +92,10 @@ export default {
       exportToCSV(store.applications);
     };
 
+    const exportDataAsPDF = () => {
+      exportToPDF(store.applications);
+    };
+
     return {
       filteredApplications,
       filters,
@@ -98,6 +105,7 @@ export default {
       deleteApplication,
       exportDataAsJSON,
       exportDataAsCSV,
+      exportDataAsPDF,
     };
   },
 };
