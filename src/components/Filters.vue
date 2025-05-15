@@ -1,6 +1,6 @@
 <template>
   <div class="mb-4">
-    <form @submit.prevent="applyFilters">
+    <form @submit.prevent="applyFilters" novalidate>
       <div class="row g-3">
         <!-- Status Dropdown -->
         <div class="col-md-4">
@@ -8,11 +8,16 @@
           <select
             v-model="localFilters.status"
             class="form-select"
-            name="status"
             id="filter-status"
+            name="status"
+            aria-label="Filter by Status"
           >
             <option value="">Filter by Status</option>
-            <option v-for="status in statuses" :key="status" :value="status">
+            <option
+              v-for="status in statuses"
+              :key="status"
+              :value="status"
+            >
               {{ status }}
             </option>
           </select>
@@ -20,22 +25,31 @@
 
         <!-- Keyword Input -->
         <div class="col-md-4">
-          <label for="filter-keyword" class="form-label visually-hidden">Search by Company or Role</label>
+          <label for="filter-keyword" class="form-label visually-hidden"
+            >Search by Company or Role</label
+          >
           <input
             type="text"
             v-model="localFilters.keyword"
             class="form-control"
-            placeholder="Search by Company or Role"
-            name="keyword"
             id="filter-keyword"
+            name="keyword"
+            placeholder="Search by Company or Role"
             autocomplete="on"
+            aria-label="Search by Company or Role"
           />
         </div>
 
         <!-- Buttons -->
-        <div class="col-md-4 d-flex justify-content-start justify-content-md-end">
-          <button type="submit" class="btn btn-primary me-2">Apply</button>
-          <button type="button" class="btn btn-secondary" @click="clearFilters">Clear</button>
+        <div
+          class="col-md-4 d-flex justify-content-start justify-content-md-end"
+        >
+          <button type="submit" class="btn btn-primary me-2">
+            Apply
+          </button>
+          <button type="button" class="btn btn-secondary" @click="clearFilters">
+            Clear
+          </button>
         </div>
       </div>
     </form>
@@ -44,6 +58,7 @@
 
 <script>
 export default {
+  name: "FilterForm",
   props: {
     filters: {
       type: Object,
@@ -53,19 +68,19 @@ export default {
   data() {
     return {
       statuses: [
-        'Saved',
-        'Applied',
-        'Phone Screen',
-        'Technical Interview',
-        'Final Interview',
-        'Offer Extended',
-        'Offer Accepted',
-        'Rejected',
-        'Withdrawn',
+        "Saved",
+        "Applied",
+        "Phone Screen",
+        "Technical Interview",
+        "Final Interview",
+        "Offer Extended",
+        "Offer Accepted",
+        "Rejected",
+        "Withdrawn",
       ],
       localFilters: {
-        status: '',
-        keyword: '',
+        status: "",
+        keyword: "",
       },
     };
   },
@@ -80,12 +95,12 @@ export default {
   },
   methods: {
     applyFilters() {
-      this.$emit('applyFilters', { ...this.localFilters });
+      this.$emit("applyFilters", { ...this.localFilters });
     },
     clearFilters() {
-      this.localFilters.status = '';
-      this.localFilters.keyword = '';
-      this.$emit('clearFilters');
+      this.localFilters.status = "";
+      this.localFilters.keyword = "";
+      this.$emit("clearFilters");
     },
   },
 };
@@ -108,14 +123,18 @@ select:focus,
 input:focus {
   border-color: #0056b3;
   box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+  outline: none;
 }
 
 button {
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  min-width: 100px;
 }
 
-button:hover {
+button:hover,
+button:focus {
   transform: scale(1.05);
+  outline: none;
 }
 
 @media (max-width: 768px) {

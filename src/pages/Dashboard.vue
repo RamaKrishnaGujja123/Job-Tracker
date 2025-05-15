@@ -1,19 +1,22 @@
 <template>
   <div class="container mt-4">
     <h2 class="mb-4 text-center">Dashboard</h2>
-    <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-secondary me-2" @click="exportDataAsJSON">
+
+    <div class="d-flex justify-content-end mb-3 flex-wrap gap-2">
+      <button class="btn btn-secondary" @click="exportDataAsJSON">
         Export as JSON
       </button>
       <button class="btn btn-secondary" @click="exportDataAsCSV">
         Export as CSV
       </button>
     </div>
+
     <Filters
       :filters="filters"
       @applyFilters="applyFilters"
       @clearFilters="clearFilters"
     />
+
     <div class="row">
       <div
         v-for="application in filteredApplications"
@@ -30,17 +33,15 @@
   </div>
 </template>
 
-
 <script>
 import { computed, reactive } from 'vue';
 import { useApplicationStore } from '../store/applicationStore';
 import ApplicationCard from '../components/ApplicationCard.vue';
 import Filters from '../components/Filters.vue';
-import AddApplicationModal from '../components/AddApplicationModal.vue';
 import { exportToJSON, exportToCSV } from '../utils/exportUtils';
 
 export default {
-  components: { ApplicationCard, Filters, AddApplicationModal },
+  components: { ApplicationCard, Filters },
   setup() {
     const store = useApplicationStore();
 
@@ -51,8 +52,7 @@ export default {
 
     const filteredApplications = computed(() => {
       return store.applications.filter((app) => {
-        const matchesStatus =
-          filters.status === '' || app.status === filters.status;
+        const matchesStatus = filters.status === '' || app.status === filters.status;
         const matchesKeyword =
           filters.keyword === '' ||
           app.company.toLowerCase().includes(filters.keyword.toLowerCase()) ||
@@ -77,7 +77,7 @@ export default {
 
     const deleteApplication = (id) => {
       if (confirm('Are you sure you want to delete this application?')) {
-        store.removeApplication(id);  // Correct store method
+        store.removeApplication(id);
       }
     };
 
@@ -89,22 +89,15 @@ export default {
       exportToCSV(store.applications);
     };
 
-    const handleAddApplication = (newApp) => {
-      store.addApplication(newApp);
-      filters.status = '';
-      filters.keyword = '';
-    };
-
     return {
       filteredApplications,
       filters,
       applyFilters,
       clearFilters,
       updateApplicationStatus,
-      deleteApplication,     // expose deleteApplication to template
+      deleteApplication,
       exportDataAsJSON,
       exportDataAsCSV,
-      handleAddApplication,
     };
   },
 };
@@ -118,7 +111,7 @@ export default {
 
 h2 {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
   color: #333;
 }
 
@@ -127,11 +120,15 @@ h2 {
 }
 
 button {
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 
 button:hover {
   transform: scale(1.05);
+}
+
+.d-flex {
+  gap: 0.5rem;
 }
 
 @media (max-width: 768px) {
@@ -141,12 +138,12 @@ button:hover {
 
   .d-flex {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .btn {
-    margin-bottom: 0.5rem;
     width: 100%;
+    margin-bottom: 0.5rem;
   }
 }
 </style>

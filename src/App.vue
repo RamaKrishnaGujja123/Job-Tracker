@@ -29,6 +29,8 @@
         </div>
       </div>
     </nav>
+
+    <!-- Route outlet -->
     <router-view />
   </div>
 </template>

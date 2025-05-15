@@ -1,14 +1,18 @@
 <template>
   <div class="container mt-4">
     <h2 class="mb-4 text-center">Application Timeline</h2>
-    <div v-if="applications.length === 0" class="alert alert-info text-center">
+
+    <div v-if="applications.length === 0" class="alert alert-info text-center" role="alert">
       No applications found. Add some applications to see their timeline.
     </div>
+
     <div v-else>
       <div
         v-for="application in applications"
         :key="application.id"
         class="card mb-4 shadow-sm rounded"
+        tabindex="0"
+        aria-label="Application timeline card"
       >
         <div class="card-body">
           <h5 class="card-title">{{ application.company }}</h5>
@@ -19,10 +23,10 @@
             <li
               v-for="historyItem in application.history"
               :key="historyItem.date"
-              class="timeline-item"
+              class="timeline-item d-flex align-items-center"
             >
               <span class="badge bg-secondary">{{ formatDate(historyItem.date) }}</span>
-              <span>{{ historyItem.status }}</span>
+              <span class="ms-3">{{ historyItem.status }}</span>
             </li>
           </ul>
         </div>
@@ -48,29 +52,37 @@ export default {
 </script>
 
 <style scoped>
-/* Styling consistency with other components */
 h2 {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
   color: #333;
 }
 
 .card {
-  padding: 1rem;
   background-color: #f9f9f9;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:focus,
+.card:hover {
+  transform: scale(1.02);
+  outline: none;
+  box-shadow: 0 0 0 3px #0056b3;
 }
 
 .card-title {
   font-size: 1.25rem;
-  font-weight: bold;
+  font-weight: 700;
   color: #0056b3;
 }
 
 .card-text {
   font-size: 1rem;
   color: #555;
+  margin-bottom: 1rem;
 }
 
 .alert {
@@ -80,45 +92,40 @@ h2 {
 }
 
 .timeline {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
-  margin-top: 1rem;
+  margin: 0;
 }
 
-.timeline li {
-  margin: 10px 0;
-  padding-left: 20px;
+.timeline-item {
   position: relative;
+  margin: 0.5rem 0;
   font-size: 0.875rem;
 }
 
-.timeline li:before {
+.timeline-item:before {
   content: '';
   position: absolute;
   left: 0;
-  top: 5px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background-color: #6c757d;
 }
 
-.timeline li span {
-  margin-left: 10px;
-}
-
 .badge {
   font-size: 0.875rem;
-  padding: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  flex-shrink: 0;
 }
 
-/* Hover effects for cards */
-.card:hover {
-  transform: scale(1.02);
-  transition: transform 0.3s ease-in-out;
+.ms-3 {
+  margin-left: 1rem;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   h2 {
     font-size: 1.5rem;
@@ -132,7 +139,7 @@ h2 {
     font-size: 0.9rem;
   }
 
-  .timeline li {
+  .timeline-item {
     font-size: 0.8rem;
   }
 }

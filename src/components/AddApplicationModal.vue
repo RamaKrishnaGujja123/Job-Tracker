@@ -1,25 +1,28 @@
 <template>
   <div>
+    <!-- Add Application Button -->
     <button
       type="button"
       class="btn btn-primary"
       data-bs-toggle="modal"
       data-bs-target="#addApplicationModal"
-      data-bs-placement="top"
       title="Add a new application"
     >
       Add Application
     </button>
 
+    <!-- Modal -->
     <div
       class="modal fade"
       id="addApplicationModal"
       tabindex="-1"
       aria-labelledby="modalLabel"
       aria-hidden="true"
+      ref="modal"
     >
       <div class="modal-dialog">
         <div class="modal-content">
+          <!-- Modal Header -->
           <div class="modal-header">
             <h5 class="modal-title" id="modalLabel">Add Application</h5>
             <button
@@ -29,8 +32,10 @@
               aria-label="Close"
             ></button>
           </div>
+
+          <!-- Modal Body -->
           <div class="modal-body">
-            <form>
+            <form @submit.prevent="saveApplication">
               <div class="mb-3">
                 <label for="companyName" class="form-label">Company</label>
                 <input
@@ -39,6 +44,7 @@
                   id="companyName"
                   placeholder="Enter company name"
                   v-model="newApplication.company"
+                  required
                 />
               </div>
               <div class="mb-3">
@@ -49,6 +55,7 @@
                   id="roleName"
                   placeholder="Enter role"
                   v-model="newApplication.role"
+                  required
                 />
               </div>
               <div class="mb-3">
@@ -64,8 +71,11 @@
                   <option value="Rejected">Rejected</option>
                 </select>
               </div>
+              <!-- Form submit buttons moved to footer for better UX -->
             </form>
           </div>
+
+          <!-- Modal Footer -->
           <div class="modal-footer">
             <button
               type="button"
@@ -89,28 +99,56 @@
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle"; // Import Bootstrap JS for modal handling
+
 export default {
-  data() {
-    return {
-      newApplication: {
-        company: "",
-        role: "",
-        status: "Applied",
-      },
-    };
-  },
-  methods: {
-    saveApplication() {
-      this.$emit("addApplication", this.newApplication);
-      // Reset form after saving
-      this.newApplication = {
+  emits: ["addApplication"],
+  setup(_, { emit }) {
+    const newApplication = ref({
+      company: "",
+      role: "",
+      status: "Applied",
+    });
+
+    const modalInstance = ref(null);
+
+    onMounted(() => {
+      // Initialize Bootstrap modal JS
+      const modalEl = document.getElementById("addApplicationModal");
+      modalInstance.value = new bootstrap.Modal(modalEl);
+    });
+
+    const saveApplication = () => {
+      if (
+        !newApplication.value.company.trim() ||
+        !newApplication.value.role.trim()
+      ) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      // Emit the new application object to parent component
+      emit("addApplication", { ...newApplication.value });
+
+      // Reset the form
+      newApplication.value = {
         company: "",
         role: "",
         status: "Applied",
       };
-      // Close modal
-      document.querySelector("#addApplicationModal").click();
-    },
+
+      // Hide the modal using Bootstrap JS API
+      modalInstance.value.hide();
+    };
+
+    return {
+      newApplication,
+      saveApplication,
+    };
   },
 };
 </script>
+
+<style scoped>
+/* You can add any component-specific styling here */
+</style>

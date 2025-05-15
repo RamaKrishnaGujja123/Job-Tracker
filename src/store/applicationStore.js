@@ -4,6 +4,7 @@ export const useApplicationStore = defineStore('applicationStore', {
   state: () => ({
     applications: JSON.parse(localStorage.getItem('applications') || '[]'),
   }),
+
   actions: {
     /**
      * Add a new application to the store and save it to localStorage.
@@ -20,10 +21,10 @@ export const useApplicationStore = defineStore('applicationStore', {
      * @param {string} newStatus - The new status to assign to the application.
      */
     updateApplicationStatus(id, newStatus) {
-      const appIndex = this.applications.findIndex((app) => app.id === id);
-      if (appIndex !== -1) {
-        this.applications[appIndex].status = newStatus;
-        this.applications[appIndex].history.push({
+      const app = this.applications.find(app => app.id === id);
+      if (app) {
+        app.status = newStatus;
+        app.history.push({
           status: newStatus,
           date: new Date().toISOString(),
         });

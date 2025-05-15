@@ -10,8 +10,10 @@
           v-model="form.company"
           class="form-control"
           required
+          autocomplete="organization"
         />
       </div>
+
       <div class="mb-3">
         <label for="role" class="form-label">Role/Title</label>
         <input
@@ -20,8 +22,10 @@
           v-model="form.role"
           class="form-control"
           required
+          autocomplete="off"
         />
       </div>
+
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>
         <input
@@ -29,8 +33,10 @@
           id="location"
           v-model="form.location"
           class="form-control"
+          autocomplete="off"
         />
       </div>
+
       <div class="mb-3">
         <label for="appliedDate" class="form-label">Applied Date</label>
         <input
@@ -40,6 +46,7 @@
           class="form-control"
         />
       </div>
+
       <div class="mb-3">
         <label for="status" class="form-label">Application Status</label>
         <select
@@ -47,20 +54,29 @@
           v-model="form.status"
           class="form-select"
         >
-          <option v-for="status in statuses" :key="status" :value="status">
+          <option
+            v-for="status in statuses"
+            :key="status"
+            :value="status"
+          >
             {{ status }}
           </option>
         </select>
       </div>
+
       <div class="mb-3">
         <label for="notes" class="form-label">Notes/Comments</label>
         <textarea
           id="notes"
           v-model="form.notes"
           class="form-control"
+          rows="3"
         ></textarea>
       </div>
-      <button type="submit" class="btn btn-primary w-100">Add Application</button>
+
+      <button type="submit" class="btn btn-primary w-100">
+        Add Application
+      </button>
     </form>
   </div>
 </template>
@@ -69,6 +85,7 @@
 import { useApplicationStore } from '../store/applicationStore';
 
 export default {
+  name: "AddApplication",
   data() {
     return {
       form: {
@@ -97,33 +114,34 @@ export default {
       const store = useApplicationStore();
       const application = {
         ...this.form,
-        id: Date.now().toString(), // Simple unique ID
+        id: Date.now().toString(), // Unique ID based on timestamp
         history: [{ status: this.form.status, date: new Date().toISOString() }],
       };
       store.addApplication(application);
-      this.$router.push('/'); // Redirect to Dashboard
+      this.$router.push('/'); // Redirect after adding
     },
   },
 };
 </script>
 
 <style scoped>
-/* Styling consistency */
+/* Typography */
 h2 {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
   color: #333;
 }
 
+/* Form styling */
 form {
   background-color: #f9f9f9;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
 }
 
 label {
-  font-weight: bold;
+  font-weight: 600;
   color: #555;
 }
 
@@ -138,22 +156,23 @@ select:focus,
 textarea:focus {
   border-color: #0056b3;
   box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+  outline: none;
 }
 
 button {
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  font-weight: 600;
 }
 
 button:hover {
   transform: scale(1.02);
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   h2 {
     font-size: 1.5rem;
   }
-
   form {
     padding: 1rem;
   }

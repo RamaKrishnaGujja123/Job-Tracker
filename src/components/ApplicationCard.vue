@@ -7,12 +7,18 @@
         <strong>Status:</strong>
         <StatusBadge :status="application.status" />
       </p>
+
       <StatusDropdown
         :currentStatus="application.status"
         @statusChange="updateStatus"
-      /> 
+      />
+
       <div class="mt-3">
-        <button class="btn btn-danger btn-sm" @click="deleteApplication">
+        <button
+          class="btn btn-danger btn-sm"
+          @click="deleteApplication"
+          aria-label="Delete application"
+        >
           Delete
         </button>
       </div>
@@ -21,10 +27,12 @@
 </template>
 
 <script>
-import StatusBadge from './StatusBadge.vue';
-import StatusDropdown from './StatusDropdown.vue';
+import { onMounted } from "vue";
+import StatusBadge from "./StatusBadge.vue";
+import StatusDropdown from "./StatusDropdown.vue";
 
 export default {
+  name: "ApplicationCard",
   props: {
     application: {
       type: Object,
@@ -35,18 +43,20 @@ export default {
     StatusBadge,
     StatusDropdown,
   },
+  emits: ["updateStatus", "deleteApplication"],
   methods: {
     updateStatus(newStatus) {
-      this.$emit('updateStatus', this.application.id, newStatus);
+      this.$emit("updateStatus", this.application.id, newStatus);
     },
     deleteApplication() {
-      if (confirm('Are you sure you want to delete this application?')) {
-        this.$emit('deleteApplication', this.application.id);
+      if (confirm("Are you sure you want to delete this application?")) {
+        this.$emit("deleteApplication", this.application.id);
       }
     },
   },
   mounted() {
-    import('gsap').then(({ gsap }) => {
+    // Animate card appearance with GSAP
+    import("gsap").then(({ gsap }) => {
       gsap.from(this.$el, { opacity: 0, y: 50, duration: 0.5 });
     });
   },
@@ -57,6 +67,7 @@ export default {
 .card {
   margin-bottom: 1.5rem;
   transition: transform 0.3s ease-in-out;
+  cursor: default;
 }
 
 .card:hover {
@@ -65,7 +76,8 @@ export default {
 
 .card-title {
   font-size: 1.25rem;
-  font-weight: bold;
+  font-weight: 700;
+  color: #212529;
 }
 
 .card-text {
@@ -76,10 +88,14 @@ export default {
 .btn-danger {
   background-color: #dc3545;
   border-color: #dc3545;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.btn-danger:hover {
+.btn-danger:hover,
+.btn-danger:focus {
   background-color: #c82333;
   border-color: #bd2130;
+  outline: none;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
 }
 </style>
