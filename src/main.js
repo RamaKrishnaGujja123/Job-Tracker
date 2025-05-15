@@ -9,7 +9,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const app = createApp(App);
 
-app.use(createPinia());
-app.use(router);
+app.use(createPinia()); // Set up Pinia for state management
+app.use(router); // Set up Vue Router for navigation
 
-app.mount('#app');
+app.mount('#app'); // Mount the Vue application to the DOM

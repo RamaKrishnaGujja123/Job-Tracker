@@ -3,7 +3,7 @@
     <form @submit.prevent="applyFilters">
       <div class="row g-3">
         <div class="col-md-4">
-          <select v-model="filters.status" class="form-select">
+          <select v-model="localFilters.status" class="form-select">
             <option value="">Filter by Status</option>
             <option v-for="status in statuses" :key="status" :value="status">
               {{ status }}
@@ -13,12 +13,12 @@
         <div class="col-md-4">
           <input
             type="text"
-            v-model="filters.keyword"
+            v-model="localFilters.keyword"
             class="form-control"
             placeholder="Search by Company or Role"
           />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 d-flex justify-content-start justify-content-md-end">
           <button type="submit" class="btn btn-primary me-2">Apply</button>
           <button type="button" class="btn btn-secondary" @click="clearFilters">
             Clear
@@ -39,6 +39,10 @@ export default {
   },
   data() {
     return {
+      localFilters: {
+        status: this.filters.status,
+        keyword: this.filters.keyword,
+      },
       statuses: [
         'Saved',
         'Applied',
@@ -52,11 +56,22 @@ export default {
       ],
     };
   },
+  watch: {
+    filters: {
+      handler(newVal) {
+        this.localFilters.status = newVal.status;
+        this.localFilters.keyword = newVal.keyword;
+      },
+      deep: true,
+    },
+  },
   methods: {
     applyFilters() {
-      this.$emit('applyFilters', { ...this.filters });
+      this.$emit('applyFilters', { ...this.localFilters });
     },
     clearFilters() {
+      this.localFilters.status = '';
+      this.localFilters.keyword = '';
       this.$emit('clearFilters');
     },
   },

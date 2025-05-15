@@ -4,9 +4,9 @@ import AddApplication from './pages/AddApplication.vue';
 import TimelineView from './pages/TimelineView.vue';
 
 const routes = [
-  { path: '/', component: Dashboard },
-  { path: '/add', component: AddApplication },
-  { path: '/timeline', component: TimelineView },
+  { path: '/', name: 'Dashboard', component: Dashboard },
+  { path: '/add', name: 'AddApplication', component: AddApplication },
+  { path: '/timeline', name: 'TimelineView', component: TimelineView },
 ];
 
 const router = createRouter({

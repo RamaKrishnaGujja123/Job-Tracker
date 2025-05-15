@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4">
-    <h2 class="mb-4">Dashboard</h2>
+    <h2 class="mb-4 text-center">Dashboard</h2>
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-secondary me-2" @click="exportDataAsJSON">
         Export as JSON
@@ -18,7 +18,7 @@
       <div
         v-for="application in filteredApplications"
         :key="application.id"
-        class="col-lg-4 col-md-6 mb-4"
+        class="col-lg-4 col-md-6 col-sm-12 mb-4"
       >
         <ApplicationCard
           :application="application"
@@ -34,10 +34,11 @@ import { computed, reactive } from 'vue';
 import { useApplicationStore } from '../store/applicationStore';
 import ApplicationCard from '../components/ApplicationCard.vue';
 import Filters from '../components/Filters.vue';
+import AddApplicationModal from '../components/AddApplicationModal.vue';
 import { exportToJSON, exportToCSV } from '../utils/exportUtils';
 
 export default {
-  components: { ApplicationCard, Filters },
+  components: { ApplicationCard, Filters, AddApplicationModal },
   setup() {
     const store = useApplicationStore();
 
@@ -80,6 +81,13 @@ export default {
       exportToCSV(store.applications);
     };
 
+    const handleAddApplication = (newApp) => {
+      store.addApplication(newApp);
+      // Optional: show newly added app regardless of current filters
+      filters.status = '';
+      filters.keyword = '';
+    };
+
     return {
       filteredApplications,
       filters,
@@ -88,7 +96,49 @@ export default {
       updateApplicationStatus,
       exportDataAsJSON,
       exportDataAsCSV,
+      handleAddApplication,
     };
   },
 };
 </script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.row {
+  margin-top: 2rem;
+}
+
+button {
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .d-flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn {
+    margin-bottom: 0.5rem;
+    width: 100%;
+  }
+}
+</style>

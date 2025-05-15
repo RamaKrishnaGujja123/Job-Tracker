@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-4">
-    <h2 class="mb-4">Add New Application</h2>
-    <form @submit.prevent="addApplication">
+    <h2 class="mb-4 text-center">Add New Application</h2>
+    <form @submit.prevent="addApplication" class="p-4 bg-light rounded shadow-sm">
       <div class="mb-3">
         <label for="company" class="form-label">Company Name</label>
         <input
@@ -60,7 +60,7 @@
           class="form-control"
         ></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Add Application</button>
+      <button type="submit" class="btn btn-primary w-100">Add Application</button>
     </form>
   </div>
 </template>
@@ -106,3 +106,56 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Styling consistency */
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+form {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  font-weight: bold;
+  color: #555;
+}
+
+input,
+select,
+textarea {
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+}
+
+button {
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  form {
+    padding: 1rem;
+  }
+}
+</style>
