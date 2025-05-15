@@ -1,0 +1,49 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Node
+node_modules/
+dist/
+build/
+temp/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.*.local
+
+# Vite cache
+.vite/
+.vite-cache/
+
+# Optional: VSCode settings
+.vscode/settings.json
+
+# Mac trash folder
+.Trashes
+
+# NPM cache
+.npm/
+
+# Local history
+.history/
+
+# Optional: JetBrains IDE
+*.iml
+*.iws
+*.ipr
+out/
