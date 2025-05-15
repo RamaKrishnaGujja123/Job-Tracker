@@ -32,6 +32,15 @@ export const useApplicationStore = defineStore('applicationStore', {
     },
 
     /**
+     * Remove an application from the store by ID and update localStorage.
+     * @param {string} id - The ID of the application to remove.
+     */
+    removeApplication(id) {
+      this.applications = this.applications.filter(app => app.id !== id);
+      this.saveToLocalStorage();
+    },
+
+    /**
      * Save the current state of applications to localStorage.
      */
     saveToLocalStorage() {

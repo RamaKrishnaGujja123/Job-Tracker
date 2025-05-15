@@ -23,11 +23,13 @@
         <ApplicationCard
           :application="application"
           @updateStatus="updateApplicationStatus"
+          @deleteApplication="deleteApplication"
         />
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import { computed, reactive } from 'vue';
@@ -73,6 +75,12 @@ export default {
       store.updateApplicationStatus(id, newStatus);
     };
 
+    const deleteApplication = (id) => {
+      if (confirm('Are you sure you want to delete this application?')) {
+        store.removeApplication(id);  // Correct store method
+      }
+    };
+
     const exportDataAsJSON = () => {
       exportToJSON(store.applications);
     };
@@ -83,7 +91,6 @@ export default {
 
     const handleAddApplication = (newApp) => {
       store.addApplication(newApp);
-      // Optional: show newly added app regardless of current filters
       filters.status = '';
       filters.keyword = '';
     };
@@ -94,6 +101,7 @@ export default {
       applyFilters,
       clearFilters,
       updateApplicationStatus,
+      deleteApplication,     // expose deleteApplication to template
       exportDataAsJSON,
       exportDataAsCSV,
       handleAddApplication,

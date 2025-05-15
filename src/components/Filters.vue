@@ -2,27 +2,40 @@
   <div class="mb-4">
     <form @submit.prevent="applyFilters">
       <div class="row g-3">
+        <!-- Status Dropdown -->
         <div class="col-md-4">
-          <select v-model="localFilters.status" class="form-select">
+          <label for="filter-status" class="form-label visually-hidden">Filter by Status</label>
+          <select
+            v-model="localFilters.status"
+            class="form-select"
+            name="status"
+            id="filter-status"
+          >
             <option value="">Filter by Status</option>
             <option v-for="status in statuses" :key="status" :value="status">
               {{ status }}
             </option>
           </select>
         </div>
+
+        <!-- Keyword Input -->
         <div class="col-md-4">
+          <label for="filter-keyword" class="form-label visually-hidden">Search by Company or Role</label>
           <input
             type="text"
             v-model="localFilters.keyword"
             class="form-control"
             placeholder="Search by Company or Role"
+            name="keyword"
+            id="filter-keyword"
+            autocomplete="on"
           />
         </div>
+
+        <!-- Buttons -->
         <div class="col-md-4 d-flex justify-content-start justify-content-md-end">
           <button type="submit" class="btn btn-primary me-2">Apply</button>
-          <button type="button" class="btn btn-secondary" @click="clearFilters">
-            Clear
-          </button>
+          <button type="button" class="btn btn-secondary" @click="clearFilters">Clear</button>
         </div>
       </div>
     </form>
@@ -39,10 +52,6 @@ export default {
   },
   data() {
     return {
-      localFilters: {
-        status: this.filters.status,
-        keyword: this.filters.keyword,
-      },
       statuses: [
         'Saved',
         'Applied',
@@ -54,15 +63,19 @@ export default {
         'Rejected',
         'Withdrawn',
       ],
+      localFilters: {
+        status: '',
+        keyword: '',
+      },
     };
   },
   watch: {
     filters: {
-      handler(newVal) {
-        this.localFilters.status = newVal.status;
-        this.localFilters.keyword = newVal.keyword;
-      },
+      immediate: true,
       deep: true,
+      handler(newFilters) {
+        this.localFilters = { ...newFilters };
+      },
     },
   },
   methods: {
@@ -77,3 +90,43 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+form {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+select,
+input {
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+select:focus,
+input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+}
+
+button {
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .d-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    margin-bottom: 0.5rem;
+    width: 100%;
+  }
+}
+</style>

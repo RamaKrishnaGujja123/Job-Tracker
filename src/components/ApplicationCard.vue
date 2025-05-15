@@ -10,7 +10,12 @@
       <StatusDropdown
         :currentStatus="application.status"
         @statusChange="updateStatus"
-      />
+      /> 
+      <div class="mt-3">
+        <button class="btn btn-danger btn-sm" @click="deleteApplication">
+          Delete
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -34,10 +39,14 @@ export default {
     updateStatus(newStatus) {
       this.$emit('updateStatus', this.application.id, newStatus);
     },
+    deleteApplication() {
+      if (confirm('Are you sure you want to delete this application?')) {
+        this.$emit('deleteApplication', this.application.id);
+      }
+    },
   },
   mounted() {
-    // Add GSAP animation for the card
-    import("gsap").then(({ gsap }) => {
+    import('gsap').then(({ gsap }) => {
       gsap.from(this.$el, { opacity: 0, y: 50, duration: 0.5 });
     });
   },
@@ -62,5 +71,15 @@ export default {
 .card-text {
   font-size: 1rem;
   color: #555;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
 }
 </style>
