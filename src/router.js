@@ -10,7 +10,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(), // Uses HTML5 history mode (clean URLs)
+  history: createWebHistory(),
   routes,
 });
 
