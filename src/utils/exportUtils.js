@@ -61,7 +61,7 @@ export function exportToJSON(data, filename = 'applications.json') {
  */
 export function exportToCSV(data, filename = 'applications.csv') {
   if (!Array.isArray(data) || data.length === 0) {
-    console.error('Invalid data: Cannot export empty or non-array data to CSV.');
+    alert("No data available to export as CSV.");
     return;
   }
 

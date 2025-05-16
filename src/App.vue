@@ -17,13 +17,32 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <router-link class="nav-link" to="/">Dashboard</router-link>
+              <router-link
+                class="nav-link"
+                to="/"
+                active-class="active"
+                exact
+              >
+                Dashboard
+              </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/add">Add Application</router-link>
+              <router-link
+                class="nav-link"
+                to="/add"
+                active-class="active"
+              >
+                Add Application
+              </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/timeline">Timeline</router-link>
+              <router-link
+                class="nav-link"
+                to="/timeline"
+                active-class="active"
+              >
+                Timeline
+              </router-link>
             </li>
           </ul>
         </div>
@@ -35,8 +54,13 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'Navbar',
+}
+</script>
+
 <style scoped>
-/* Navbar styles */
 .navbar {
   padding: 0.8rem 1rem;
 }
